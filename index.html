@@ -2,57 +2,227 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منوی دیجیتال | Pelle Café</title>
     <style>
         @import url('https://v1.fontapi.ir/css/Vazir');
 
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #f5f5f5;
-            --text-muted: #a0a0a0;
-            --accent-color: #d4af37;
-            --border-color: #333;
+            --bg-dark: #0f0f11;
+            --card-bg: rgba(30, 30, 32, 0.7);
+            --text-main: #f0f0f0;
+            --text-muted: #888888;
+            --accent-color: #c9a050; /* طلایی/قهوه‌ای متناسب با قهوه */
+            --border-glow: rgba(201, 160, 80, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazir', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 50px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazir', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        header { text-align: center; padding: 40px 20px 20px; background: linear-gradient(180deg, #000000 0%, var(--bg-color) 100%); }
-        .logo-container { width: 130px; height: 130px; margin: 0 auto; background-color: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; border: 1px solid var(--border-color); }
-        .logo-container img { width: 100%; height: 100%; object-fit: contain; }
+        body {
+            /* بک گراند جذاب با پترن ملایم */
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(201, 160, 80, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.02), transparent 25%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding-bottom: 80px;
+        }
 
-        .category-nav { display: flex; overflow-x: auto; padding: 15px 20px; gap: 15px; position: sticky; top: 0; background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--border-color); }
-        .category-nav::-webkit-scrollbar { display: none; }
-        .category-btn { background-color: var(--card-bg); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: bold; white-space: nowrap; cursor: pointer; transition: 0.3s; }
-        .category-btn.active { background-color: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
+        /* هدر و لوگوی آزاد */
+        header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: linear-gradient(to bottom, rgba(10,10,12,0.9) 0%, transparent 100%);
+            position: relative;
+        }
 
-        .menu-container { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .menu-item { background-color: var(--card-bg); border-radius: 20px; overflow: hidden; display: flex; padding: 15px; gap: 15px; border: 1px solid var(--border-color); animation: fadeIn 0.4s ease; }
-        .item-image { width: 80px; height: 80px; border-radius: 15px; background-color: #2a2a2a; object-fit: cover; flex-shrink: 0; }
-        .item-details { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
-        .item-title-en { font-size: 15px; font-weight: bold; color: var(--text-main); }
-        .item-title-fa { font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
-        .item-price { font-size: 15px; font-weight: bold; color: var(--accent-color); direction: ltr; }
+        .logo-container {
+            width: 100%;
+            max-width: 220px; /* لوگوی بزرگتر و جذابتر */
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.6)); /* سایه نرم برای جدا شدن از پس زمینه */
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
 
-        /* لودینگ */
-        .loading { text-align: center; padding: 50px; color: var(--text-muted); font-size: 14px; }
-        .spinner { width: 40px; height: 40px; border: 4px solid var(--border-color); border-top: 4px solid var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* نویگیشن دسته‌بندی‌ها - طراحی موبایلی مدرن */
+        .category-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 15px 20px 20px;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(to bottom, var(--bg-dark) 60%, transparent 100%);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
 
-        .error-msg { text-align: center; padding: 20px; color: #ff4444; font-size: 14px; }
+        .category-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            background-color: rgba(40, 40, 45, 0.6);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 24px;
+            border-radius: 40px; /* دکمه‌های کاملا گرد */
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .category-btn.active {
+            background-color: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--border-glow);
+            transform: scale(1.05);
+        }
+
+        /* چیدمان محصولات برای موبایل */
+        .menu-container {
+            padding: 10px 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* در موبایل یک ستونه باشه بهتره */
+            gap: 16px;
+        }
+
+        /* استایل کارت محصولات */
+        .menu-item {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.03);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            animation: slideUp 0.5s ease backwards;
+        }
+
+        /* تاخیر در لود شدن برای افکت آبشاری */
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.2s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.4s; }
+        .menu-item:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item:active {
+            transform: scale(0.98);
+        }
+
+        .item-image {
+            width: 85px;
+            height: 85px;
+            border-radius: 18px;
+            background-color: #222;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .item-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .item-title-en {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .item-title-fa {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: rgba(201, 160, 80, 0.1);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            direction: ltr;
+            align-self: flex-start;
+            border: 1px solid rgba(201, 160, 80, 0.2);
+        }
+
+        /* لودینگ شیک‌تر */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--accent-color);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 3px solid rgba(201, 160, 80, 0.2);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        /* واکنش‌گرایی برای تبلت و دسکتاپ */
+        @media (min-width: 600px) {
+            .menu-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 20px 40px;
+            }
+            .logo-container { max-width: 280px; }
+        }
+
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <!-- لینک لوگوی پله کافه -->
-            <img src="https://i.postimg.cc/85z1X1K3/pelle-logo.png" alt="Pelle Cafe Logo">
+            <!-- لینک لوگوی جدید و آزاد (بدون دایره) که برات آپلود کردم -->
+            <img src="https://i.postimg.cc/tTW2v6QG/pelle-logo-free.png" alt="Pelle Cafe Logo">
         </div>
     </header>
 
@@ -60,13 +230,13 @@
     
     <div id="loadingBox" class="loading">
         <div class="spinner"></div>
-        <p>در حال دریافت منوی کافه...</p>
+        <p>در حال دم کردن منو...</p>
     </div>
 
     <div class="menu-container" id="menuContainer"></div>
 
     <script>
-        // 🔴 شناسه (ID) گوگل شیت خودت رو اینجا قرار بده
+        // 🔴🔴🔴 آیدی فایل گوگل شیت خودت رو اینجا جایگزین کن 🔴🔴🔴
         const SHEET_ID = '1CR9ReVSNBPtu_8rpRgY8pi0z4YCt3pg0eT9KVO1fb8I'; 
         
         const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
@@ -81,28 +251,24 @@
         fetch(url)
             .then(res => res.text())
             .then(text => {
-                // پاک کردن کدهای اضافه گوگل برای رسیدن به JSON خالص
                 const jsonString = text.substring(47).slice(0, -2);
                 const json = JSON.parse(jsonString);
                 
-                // استخراج ردیف‌ها
                 const rows = json.table.rows;
                 const items = [];
 
                 rows.forEach(row => {
-                    // جلوگیری از ارور برای سلول‌های خالی
                     const category = row.c[0] ? row.c[0].v : null;
                     const nameEn = row.c[1] ? row.c[1].v : '';
                     const nameFa = row.c[2] ? row.c[2].v : '';
                     const price = row.c[3] ? row.c[3].v : '';
                     const image = row.c[4] ? row.c[4].v : '';
 
-                    if (category && nameEn) { // فقط اگر دسته‌بندی و اسم داشت وارد لیست بشه
+                    if (category && nameEn) {
                         items.push({ category, nameEn, nameFa, price, image });
                     }
                 });
 
-                // گروه‌بندی محصولات بر اساس دسته‌بندی
                 const categories = [...new Set(items.map(i => i.category))];
                 categories.forEach(cat => {
                     menuData.push({
@@ -115,7 +281,7 @@
                 renderMenuUI();
             })
             .catch(error => {
-                loadingBox.innerHTML = `<p class="error-msg">خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.</p>`;
+                loadingBox.innerHTML = `<p style="color:#ff4444;">خطا در دریافت اطلاعات. لطفا اینترنت را بررسی کنید.</p>`;
                 console.error('Error fetching data:', error);
             });
 
@@ -129,7 +295,12 @@
                     document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     renderItemsUI(cat.items);
-                    window.scrollTo({ top: 150, behavior: 'smooth' });
+                    
+                    // اسکرول نرم و هوشمند با در نظر گرفتن هدر
+                    const yOffset = -80; 
+                    const element = document.getElementById('menuContainer');
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({top: y, behavior: 'smooth'});
                 };
                 categoryNav.appendChild(btn);
             });
@@ -141,18 +312,23 @@
 
         function renderItemsUI(items) {
             menuContainer.innerHTML = '';
-            items.forEach(item => {
-                const imgSrc = item.image ? item.image : "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMzMzMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iI2EwYTBhMCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlBlbGxlPC90ZXh0Pjwvc3ZnPg==";
+            items.forEach((item, index) => {
+                // آیکون پیش‌فرض به شکل فنجان قهوه مینیمال
+                const defaultIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTU1IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTcgOHYyYTcgNyAwIDAgMS03IDdIN2E3IDcgMCAwIDEtNy03VjhoMTd6Ii8+PHBhdGggZD0iTTE3IDEwdjJhNCA0IDAgMCAwIDQtNGgtNHoiLz48cGF0aCBkPSJNMTIgMnY0Ii8+PHBhdGggZD0iTTggMnY0Ii8+PC9zdmc+";
+                
+                const imgSrc = item.image ? item.image : defaultIcon;
+                // اگر عکس نبود استایل بک‌گراند آیکون متفاوت میشه
+                const imgClass = item.image ? 'item-image' : 'item-image p-4 opacity-50';
+
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'menu-item';
+                
                 itemDiv.innerHTML = `
-                    <img src="${imgSrc}" class="item-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMzMzMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iI2EwYTBhMCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlBlbGxlPC90ZXh0Pjwvc3ZnPg=='">
+                    <img src="${imgSrc}" class="item-image" style="${item.image ? '' : 'padding: 20px; background: #1a1a1c;'}" onerror="this.src='${defaultIcon}'; this.style.padding='20px'">
                     <div class="item-details">
-                        <div class="item-header">
-                            <span class="item-title-en">${item.nameEn}</span>
-                            <span class="item-price">${item.price}t</span>
-                        </div>
+                        <span class="item-title-en">${item.nameEn}</span>
                         <span class="item-title-fa">${item.nameFa}</span>
+                        <span class="price-tag">${item.price} <span style="font-size:10px; opacity:0.7;">تومان</span></span>
                     </div>
                 `;
                 menuContainer.appendChild(itemDiv);
